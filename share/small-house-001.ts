@@ -24,7 +24,7 @@ player.onChat("house", function () {
   agent.move(UP, 1);
   agent.move(FORWARD, 10);
   agent.setSlot(1);
-  floor();
+  floor(size);
   // ===== 家の壁（2〜4段目）=====
   player.say("家の壁（2〜4段目）を作ります");
   agent.teleport(basePos, NORTH);
@@ -61,7 +61,7 @@ player.onChat("house", function () {
 });
 
 // floor
-function floor() {
+function floor(size: number) {
   for (let index = 0; index < size / 2; index++) {
     for (let index = 0; index < size; index++) {
       agent.place(DOWN);
@@ -77,6 +77,7 @@ function floor() {
     agent.move(FORWARD, 1);
   }
 }
+
 // wall
 function wall() {
   // 2〜4段目（合計3段）
@@ -93,13 +94,13 @@ function wall() {
     agent.move(UP, 1);
   }
 }
+
 // roof
 function roof() {
-  shrink = 1;
-  // 5〜7段目（合計3段）
-  for (let index = 0; index < 3; index++) {
+  shrink = 0;
+  for (let index = 0; index < 2; index++) {
     for (let index = 0; index < 4; index++) {
-      for (let index = 0; index < size - shrink; index++) {
+      for (let index = 0; index < size - shrink - 1; index++) {
         agent.place(DOWN);
         agent.move(FORWARD, 1);
       }
@@ -111,7 +112,9 @@ function roof() {
     agent.move(RIGHT, 1);
     shrink += 2;
   }
+  floor(size - shrink);
 }
+
 // window
 function window() {
   for (let index = 0; index < Math.floor(size / 3) - 1; index++) {
@@ -123,6 +126,7 @@ function window() {
     agent.move(RIGHT, 1);
   }
 }
+
 // exterior
 function exterior() {
   for (let index = 0; index < size; index++) {
